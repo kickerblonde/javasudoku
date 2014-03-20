@@ -8,14 +8,28 @@ import bartlett.chelsea.javasudoku.api.Cell;
 public class CellImpl implements Cell {
 
 	private final Set<Integer> _possibleValues;
-	
-	public CellImpl(){
+	private final int _x;
+	private final int _y;
+
+	public CellImpl(final int x, final int y) {
+		_x = x;
+		_y = y;
 		_possibleValues = new HashSet<Integer>();
-		for (int v = 1; v < 10; v++){
+		for (int v = 1; v < 10; v++) {
 			_possibleValues.add(v);
 		}
 	}
-	
+
+	@Override
+	public int getX() {
+		return _x;
+	}
+
+	@Override
+	public int getY() {
+		return _y;
+	}
+
 	@Override
 	public boolean isPossibleValue(int value) {
 		return _possibleValues.contains(value);
@@ -37,15 +51,15 @@ public class CellImpl implements Cell {
 	}
 
 	@Override
-	public void setValue(int value){
+	public void setValue(int value) {
 		_possibleValues.clear();
 		_possibleValues.add(value);
 	}
-	
+
 	@Override
-	public int getSolvedValue(){
-		if (isSolved()){
-			for(final Integer value: _possibleValues){
+	public int getSolvedValue() {
+		if (isSolved()) {
+			for (final Integer value : _possibleValues) {
 				return value;
 			}
 			throw new IllegalStateException("No values left");
@@ -53,5 +67,5 @@ public class CellImpl implements Cell {
 			throw new IllegalStateException("Not Solved");
 		}
 	}
-	
+
 }

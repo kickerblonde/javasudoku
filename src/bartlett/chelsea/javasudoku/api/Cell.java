@@ -3,6 +3,8 @@ package bartlett.chelsea.javasudoku.api;
 import java.util.Set;
 
 public interface Cell {
+	public int getX();
+	public int getY();
 	public boolean isPossibleValue(int value);
 	public boolean isSolved();
 	public Set<Integer> possibleValues();
