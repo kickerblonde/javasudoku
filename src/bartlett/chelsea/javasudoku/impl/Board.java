@@ -5,6 +5,7 @@ import bartlett.chelsea.javasudoku.api.Cell;
 public class Board {
 
 	private static final int BOARD_DIMENSION = 9;
+	private static final int BLOCK_SIZE = BOARD_DIMENSION / 3;
 
 	private final Cell[][] _cells;
 
@@ -31,7 +32,7 @@ public class Board {
 		for (int y = 0; y < BOARD_DIMENSION; y++) {
 			_rows[y] = new CellGroup(_cells[y]);
 		}
-		
+
 		// populate columns
 		for (int x = 0; x < BOARD_DIMENSION; x++) {
 			final Cell[] column = new Cell[BOARD_DIMENSION];
@@ -40,13 +41,24 @@ public class Board {
 			}
 			_columns[x] = new CellGroup(column);
 		}
-		
+
 		// populate blocks
-		
+		for (int b = 0; b < BOARD_DIMENSION; b++) {
+			final Cell[] block = new Cell[BOARD_DIMENSION];
+			final int xOffSet = (b % 3) * BLOCK_SIZE;
+			final int yOffSet = (b / 3) * BLOCK_SIZE;
+			for (int x = 0; x < BLOCK_SIZE; x++) {
+				for (int y = 0; y < BLOCK_SIZE; y++) {
+					block[x * BLOCK_SIZE + y] = _cells[yOffSet + y][xOffSet + x];
+				}
+			}
+			_blocks[b] = new CellGroup(block);
+		}
+
 	}
 
 	public Cell get(final int x, final int y) {
-		return _cells[x][y];
+		return _cells[y][x];
 	}
 
 	public CellGroup getRow(final int y) {
@@ -60,15 +72,15 @@ public class Board {
 	public CellGroup getBlock(final int idx) {
 		return _blocks[idx];
 	}
-	
-	private CellGroup getBlockAtConstruction(final int idx) {
-		int i = 0;
-		final Cell[] cells = new Cell[BOARD_DIMENSION];
-		for (int y = 0; y < BOARD_DIMENSION; y++) {
-			for (int x = 0; x < BOARD_DIMENSION; x++) {
-				// figure out logic to go here
+
+	public String toString(){
+		final StringBuilder sb = new StringBuilder();
+		for( int y = 0; y < BOARD_DIMENSION; y++){
+			for( int x = 0; x < BOARD_DIMENSION; x++){
+				sb.append(get(x,y).toString());
 			}
+			sb.append("\n");
 		}
-		return new CellGroup(cells);
+		return sb.toString();		
 	}
 }

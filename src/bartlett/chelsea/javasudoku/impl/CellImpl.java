@@ -67,5 +67,22 @@ public class CellImpl implements Cell {
 			throw new IllegalStateException("Not Solved");
 		}
 	}
+	public String toString(){
+		final StringBuilder sb = new StringBuilder("{");
+		if (isPossibleValue(1)){
+			sb.append(1);
+		} else {
+			sb.append("*");
+		}
+		for (int x = 2; x < 10; x ++){
+			sb.append(",");
+			if (isPossibleValue(x)){
+				sb.append(x);
+			} else {
+				sb.append("*");
+			}
+		}
+		return sb.append("}").toString();
+}
 
 }
