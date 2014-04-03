@@ -1,5 +1,7 @@
 package bartlett.chelsea.javasudoku.impl;
 
+import java.util.Scanner;
+
 import bartlett.chelsea.javasudoku.api.Cell;
 
 public class Board {
@@ -73,14 +75,47 @@ public class Board {
 		return _blocks[idx];
 	}
 
-	public String toString(){
+	public String toString() {
 		final StringBuilder sb = new StringBuilder();
-		for( int y = 0; y < BOARD_DIMENSION; y++){
-			for( int x = 0; x < BOARD_DIMENSION; x++){
-				sb.append(get(x,y).toString());
+		for (int y = 0; y < BOARD_DIMENSION; y++) {
+			for (int x = 0; x < BOARD_DIMENSION; x++) {
+				sb.append(get(x, y).toString());
 			}
 			sb.append("\n");
 		}
-		return sb.toString();		
+		return sb.toString();
+	}
+
+	public void initialize(String initial) {
+		if (initial.length() != 81) {
+			throw new IllegalArgumentException(
+					"String Must Be 81 Characters Long");
+		}
+		for (int i = 0; i < 81; i++) {
+			int x = i % BOARD_DIMENSION;
+			int y = i / BOARD_DIMENSION;
+			String c = initial.substring(i, i + 1);
+			if (c.equals(" ") || c.equals("0")) {
+				continue;
+			}
+
+			get(x, y).setValue(Integer.parseInt(c));
+		}
+	}
+
+	public void initializeFromUserInput() {
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+			try {
+				System.out.println("Enter the starting value string: ");
+				String initial = scanner.nextLine();
+				initialize(initial);
+			} catch (IllegalArgumentException e) {
+				System.err.println(e.getMessage());
+				continue;
+			}
+			break;
+		}
+		scanner.close();
 	}
 }
